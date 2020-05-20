@@ -1,30 +1,23 @@
 .. vim: set fileencoding=utf-8 :
-.. Tue 16 Aug 16:07:37 CEST 2016
 
 .. image:: https://img.shields.io/badge/docs-available-orange.svg
    :target: https://www.idiap.ch/software/bob/docs/bob/gridtk/master/index.html
 .. image:: https://gitlab.idiap.ch/bob/gridtk/badges/master/pipeline.svg
    :target: https://gitlab.idiap.ch/bob/gridtk/commits/master
 .. image:: https://gitlab.idiap.ch/bob/gridtk/badges/master/coverage.svg
-   :target: https://gitlab.idiap.ch/bob/gridtk/commits/master
+   :target: https://www.idiap.ch/software/bob/docs/bob/bob.ip.binseg/master/coverage/index.html
 .. image:: https://img.shields.io/badge/gitlab-project-0000c0.svg
    :target: https://gitlab.idiap.ch/bob/gridtk
 
 
-======================
- Parallel Job Manager
-======================
+==================
+ HPC Job Manager
+==================
 
-This package is part of the signal-processing and machine learning toolbox
-Bob_. It provides a set of python wrappers around SGE utilities like ``qsub``,
-``qstat`` and ``qdel``. It interacts with these tools to submit and manage grid
-jobs making up a complete workflow ecosystem. Currently, it is set up to work
-with the SGE grid at Idiap, but it is also possible to modify it to be used in
-other SGE grids.
-
-Since version 1.0.x there is also a local submission system introduced. Instead
-of sending jobs to the SGE grid, it executes them in parallel processes on the
-local machine, using a simple scheduling system.
+This package provides a set of scripts that interact with a DRMAA-compatible
+job submission system available on your computer.  It can submit, resubmit,
+remove and display information about jobs you submitted to your
+high-performance computing (HPC) cluster.
 
 
 Installation

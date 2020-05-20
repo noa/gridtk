@@ -1,33 +1,47 @@
 #!/usr/bin/env python
 # vim: set fileencoding=utf-8 :
 
-"""Executes a given command within the context of a shell script that has its
-enviroment set like Idiap's 'SETSHELL grid' does."""
+"""The main entry for bob ip binseg (click-based) scripts."""
 
-from __future__ import print_function
+import click
 
-import os
-import sys
+from bob.extension.scripts.click_helper import AliasedGroup, verbosity_option
 
-def main():
+import logging
+logger = logging.getLogger(__name__)
 
-  from ..setshell import replace
 
-  # get the name of the script that we actually want to execute
-  # (as defined in the setup.py)
-  prog = os.path.basename(sys.argv[0])
-  # remove the .py extension, if available
-  if prog[-3:] == '.py': prog = prog[:-3]
+def __idiap_setup__():
+    """Sets up access to Idiap's SoGE implementation, if available"""
 
-  if prog == 'grid':
-    # act as before
-    if len(sys.argv) < 2:
-      print(__doc__)
-      print("usage: %s <command> [arg [arg ...]]" % \
-          os.path.basename(sys.argv[0]))
-      return 1
+    import os
+    lib = '/idiap/resource/software/sge/stable/lib/lx-amd64/libdrmaa.so'
+    if os.path.exists(lib):
+        logger.debug(f"At Idiap, setting up SoGE library at {lib}...")
+        os.environ['DRMAA_LIBRARY_PATH'] = lib
+        import drmaa
 
-    replace('grid', sys.argv[1:])
-  else:
-    # call that specific command on the grid environment
-    replace('grid', [prog] + sys.argv[1:])
+
+@click.group(cls=AliasedGroup)
+def grid():
+    """HPC Job Manager"""
+    __idiap_setup__()
+
+
+@grid.command(
+    epilog="""Examples:
+
+\b
+    1. List all jobs executing right now on your behalf:
+
+       $ bob grid list
+
+""",
+)
+@verbosity_option()
+def list(verbose, **kwargs):
+    """Lists submitted jobs
+    """
+
+    from ..list import list
+    list()
